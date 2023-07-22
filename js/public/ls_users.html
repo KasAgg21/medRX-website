@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Users</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js" integrity="sha512-KZmyTq3PLx9EZl0RHShHQuXtrvdJ+m35tuOiwlcZfs/rE7NZv29ygNA8SFCkMXTnYZQK2OX0Gm2qKGfvWEtRXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+    var module=angular.module("mymodule",[]);
+    module.controller("mycont",function($scope,$http){
+        $scope.dofetchall=function()
+        {
+            alert();
+            var url="/get-all-users";
+            $http.get(url).then(done,fail);
+            function done(response)
+            {
+                alert(JSON.stringify(response.data));
+                $scope.jsonArray=response.data;
+            }
+            function fail(resperr)
+            {
+                alert(resperr.data);
+            }
+        }
+        $scope.doblock=function(email)
+        {
+            var url="/block-users?email="+email;
+            $http.get(url).then(done,fail);
+            function done(response)
+            {
+                alert(JSON.stringify(response.data));
+                $scope.dofetchall();
+            }
+            function fail(resperr)
+            {
+                alert(resperr.data);
+            }
+        }
+        $scope.dounblock=function(email)
+        {
+            var url="/unblock-users?email="+email;
+            $http.get(url).then(done,fail);
+            function done(response)
+            {
+                alert(JSON.stringify(response.data));
+                $scope.dofetchall();
+            }
+            function fail(resperr)
+            {
+                alert(resperr.data);
+            }
+        }
+    });
+  </script>
+</head>
+
+<body ng-app="mymodule" ng-controller="mycont">
+  <nav class="navbar bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/admin">
+        <img src="admin" alt="Logo" width="30" height="24"
+          class="d-inline-block align-text-top">
+        Sitename
+      </a>
+      <center>
+        Admin Portal
+      </center>
+    </div>
+  </nav>
+  <div class="container-fluid">
+    <div class="col-12 pt-5">
+        <center>
+            <button type="button" class="btn btn-primary" ng-click="dofetchall();">Fetch All Users</button>
+        </center>
+    </div>
+    <table class="table table-light table-striped col-md-10 mt-4" border="1" >
+        <tr>
+            <th>Sr. No.</th>
+            <th>Email Id</th>
+            <th>Date of SignUp</th>
+            <th>User Type</th>
+            <th>Status</th>
+            <th>Operations</th>
+            <tr ng-repeat="obj in jsonArray">
+                <td>{{$index+1}}</td>
+                <td>{{obj.email}}</td>
+                <td>{{obj.dos}}</td>
+                <td>{{obj.type}}</td>
+                <td>{{obj.status}}</td>
+                <td align="center">
+                    <button type="button" class="btn btn-primary" ng-click="doblock(obj.email);">Block</button>
+                    <button type="button" class="btn btn-primary" ng-click="dounblock(obj.email);">Unblock</button>
+                </td>
+            </tr>
+        </tr>
+      </table>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

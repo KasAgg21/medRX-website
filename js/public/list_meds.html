@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      var au=localStorage.getItem("active");
+      $("#lbl").html(au);
+      $("#txtemail").val(au);
+      $("#btnlso").click(function () {
+        var emailid = $(txtemail).val();
+        var mednam = $(txtmdn).val();
+        var expdate = $(expdt).val();
+        var ptyp = $(pktyp).val();
+        var qty = $(txtqty).val();
+        var obj = {
+          type: "get",
+          url: "/list-out-med",
+          data: {
+            emaili: emailid,
+            mdn:mednam,
+            expdt:expdate,
+            pktyp:ptyp,
+            qty:qty
+          }
+        }
+
+        $.ajax(obj).done(function (respkuch) {
+          $("#sres").html(respkuch);
+        }).fail(function (errKuch) {
+          alert(errKuch);
+        })
+      });
+    });
+  </script>
+    <title>Details of Medicine</title>
+</head>
+<body>
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="db_donor.html">
+            <img src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="Logo" width="30" height="24"
+              class="d-inline-block align-text-top">
+            Sitename
+          </a>
+          <form class="d-flex">
+            <button class="btn btn-sm btn-outline-secondary" type="button" id="btnlo" name="btnlo">Logout</button>
+          </form>
+        </div>
+      </nav>
+    <form class="row g-3" style="padding-top:20px ;">
+        <div class="col-12">
+            <center>
+                <label >
+                    <h4>Details of Medicine</h4>
+                </label>
+            </center>
+        </div>
+        <div class="col-md-4 offset-md-1">
+          <label for="inputEmail4" class="form-label">Email</label>
+          <input type="email" class="form-control" id="txtemail" name="txtemail" readonly>
+        </div>
+        <div class="col-md-6"></div>
+        <div class="col-4 offset-md-1">
+          <label  class="form-label">Medicine Name</label>
+          <input type="text" class="form-control" id="txtmdn" name="txtmdn">
+        </div>
+        <div class="col-md-4 offset-md-1">
+          <label  class="form-label">Expiry Date</label>
+          <input type="date" class="form-control" id="expdt"  name="expdt">
+        </div>
+        <div class="col-md-4 offset-md-1">
+          <label  class="form-label">Packaging Type</label>
+          <select id="pktyp" name="pktyp" class="form-select">
+            <option selected>Select</option>
+            <option value="Strips">Strips</option>
+          </select>
+        </div>
+        <div class="col-md-4 offset-md-1">
+          <label  class="form-label">Quantity</label>
+          <input type="text" class="form-control" id="txtqty" name="txtqty">
+        </div>
+        <div class="col-12 offset-md-1">
+          <button type="button" id="btnlso" name="btnlso" class="btn btn-primary">List Out</button>
+          <span id="sres"></span>
+        </div>
+      </form>
+</body>
+</html>

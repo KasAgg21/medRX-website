@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <title>Profile</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js" integrity="sha512-KZmyTq3PLx9EZl0RHShHQuXtrvdJ+m35tuOiwlcZfs/rE7NZv29ygNA8SFCkMXTnYZQK2OX0Gm2qKGfvWEtRXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+    var module=angular.module("mymodule",[]);
+    module.controller("mycont",function($scope,$http){
+        $scope.jsonArraymed;
+        $scope.selectedObj;
+        $scope.fetchmed=function()
+        {
+          var url="/fetch-med";
+          $http.get(url).then(done,fail);
+            function done(response)
+            {
+                alert(JSON.stringify(response.data));
+                $scope.jsonArraymed=response.data;
+            }
+            function fail(resperr)
+            {
+                alert(resperr.data);
+            }
+        }
+        $scope.fetchcity=function()
+        {
+          var url="/fetch-city";
+          $http.get(url).then(done,fail);
+            function done(response)
+            {
+                alert(JSON.stringify(response.data));
+                $scope.jsonArraycity=response.data;
+            }
+            function fail(resperr)
+            {
+                alert(resperr.data);
+            }
+        }
+        $scope.searchDonors=function()
+            {
+                var url="/search-donors?medname="+$scope.selmed.medname+"&city="+$scope.selcity.city;
+                alert(url);
+                $http.get(url).then(done,fail);
+                    function done(response)
+                        {
+                            alert(JSON.stringify(response.data));
+                            $scope.jsonArray=response.data;
+
+                        }
+                     function fail(response)
+                        {
+                            alert(response.data);
+                        }
+            }
+            
+            $scope.doshowsel=function(selectedIndex)
+            { 
+              $scope.selectedObj=$scope.jsonArray[selectedIndex];
+              alert($scope.selectedObj);
+            }
+    });
+    $(document).ready(function(){
+      var au=localStorage.getItem("active");
+      $("#lbl").html(au);
+    });
+  </script>
+</head>
+
+<body ng-app="mymodule" ng-controller="mycont" ng-init="fetchcity();fetchmed();">
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="db_needy.html">
+                <img src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="Logo" width="30" height="24"
+                    class="d-inline-block align-text-top">
+                Sitename
+            </a>
+            <form class="d-flex">
+              <label for="" id="lbl" class="label" style="padding-right: 5px;"></label>
+                <button class="btn btn-sm btn-outline-secondary" type="button" id="btnlo" name="btnlo">Logout</button>
+            </form>
+        </div>
+    </nav>
+    <form class="row g-3" style="padding-top:20px ;" method="get" enctype="multipart/form-data" >
+        <div class="col-md-3 offset-md-2 ">
+            <label for="inputState" class="form-label">City</label>
+            <select id="inputState" ng-options="obj.city for obj in jsonArraycity" ng-model="selcity" class="form-select" >
+                <option value=" ">Select</option>
+            </select>
+        </div>
+        <div class="col-md-3 offset-md-1">
+            <label for="inpute" class="form-label">Medicine List</label>
+            <select id="intate" ng-options="obj.medname for obj in jsonArraymed" ng-model="selmed" class="form-select" >
+              <option value=" ">Select</option>
+          </select>
+        </div>
+        <center>
+            <div class="col-12  align-self-center">
+                <button type="button" class="btn btn-primary" id="btnpse" name="btnpse" ng-click="searchDonors();" data-bs-toggle="modal" data-bs-target="#myModal">Search Donors</button>
+            </div>
+        </center>
+        <div class="row">
+            <div class="col-md-3 offset-md-1" ng-repeat="obj in jsonArray" ng-model="selcard">
+                <div class="card" >
+                    <div class="card-body">
+                      <h5 class="card-title">{{obj.dname}}</h5>
+                      <p class="card-text">Contact:-{{obj.mobile}}</p>
+                      <p class="card-text">Availability:- {{obj.ahfrom}} to {{obj.ahto}}</p>
+                      <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eModal" ng-click="doshowsel($index);">More Details</a>
+                    </div>
+                  </div>
+            </div>
+        </div>
+        
+        <!-- Modal -->
+        
+    </form>
+
+    <div class="modal fade" id="eModal"  aria-labelledby="exampleModalLabel" aria-hidden="true" >
+      <div class="modal-dialog">
+        <div class="modal-content" >
+          <div class="modal-header" >
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <h5 class="card-title">{{selectedObj.dname}}</h5>
+            <p class="card-text">Contact:-{{selectedObj.mobile}}</p>
+            <p class="card-text">Availability:- {{selectedObj.ahfrom}} to {{selectedObj.ahto}}</p>
+            <p class="card-text">City :- {{selectedObj.city}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
