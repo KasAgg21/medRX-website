@@ -1,7 +1,7 @@
 # medRX-website
 
 
-I developed the medRX website. It is a research project that aims to develop a new drug discovery platform.
+I developed the medRX website. It is a project that aims to develop a new drug discovery platform.
 
 The website includes the following pages:
 
