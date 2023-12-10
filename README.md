@@ -15,10 +15,5 @@ Team page: This page introduces the team members who are working on the medRX pr
 
 Contact page: This page provides contact information for the medRX project.
 
-I hope this website helps people learn more about the medRX project and its mission to develop new drugs that can improve the lives of people around the world.
-
-If you have any feedback or suggestions about the website, please feel free to contact me.
-
-I am always looking for ways to improve the website and make it more informative and user-friendly.
 
 Thank you for visiting the medRX website!
